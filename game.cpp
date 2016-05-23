@@ -1,11 +1,10 @@
 #include <stdio.h>
 #include <allegro.h>
 #include <stdlib.h>
-#include "main.h"
-
-// go to globals.cpp
-extern volatile long speed_counter;
-extern int grid[GRID_X][GRID_Y];
+#include "engine.h"
+#include "input.h"
+#include "game.h"
+#include "globals.h"
 
 bool game() {
 	struct Tetromino current; // current moving tetromino,

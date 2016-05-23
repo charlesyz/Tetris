@@ -1,11 +1,8 @@
-#include <stdio.h>
 #include <allegro.h>
-#include <stdlib.h>
-#include <time.h>
-#include "main.h"
+#include "globals.h"
 
 // globals
-volatile long speed_counter = 0;
-int grid[GRID_X][GRID_Y];
-
+volatile long speed_counter = 0; // for game logic
+int grid[GRID_X][GRID_Y];	// hold grid info
 BITMAP *buffer;
+

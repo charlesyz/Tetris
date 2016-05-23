@@ -1,5 +1,9 @@
 # dev-cpp
 *.dev
+*.layout
+
+# makefiles
+*.win
 
 # Compiled Object files
 *.slo
