@@ -1,3 +1,4 @@
+// input and moving
 #include <stdio.h>
 #include <stdlib.h>
 #include <allegro.h>
@@ -6,64 +7,35 @@
 #include "globals.h"
 #include "engine.h"
 
-bool move(struct Tetromino &tetromino, int dir) {
-	int i, j, k = 0;
-
-	// check collisions
-	if (checkCollision(tetromino, 0, dir)){
-		// the block did not move
-		return false;
-	}
-
-	clearSpace(tetromino); // clear tetromino in matrix
-	
-	// if there is no collision
-	for(i = 0; i < 4; i++) {
-		// move tetromino pieces
-		tetromino.py[i] += dir;
-	}
-	// move tetromino centre position
-	tetromino.cy += dir;
-	
-	drawTetromino(tetromino); // draw tetromino to grid
-	return true;
-}
-END_OF_FUNCTION(move)
-
-bool rotate(struct Tetromino &tetromino) {
-	int xnew[4];// new x positions
-	int ynew[4];// new y positions
-	int i;
-	bool noCollide = true; // is there a collision
-
-	clearSpace(tetromino); // clear tetromino in grid
-
-	// rotation algorithms
-	for (i = 0; i < 4; i++) {
-		xnew[i] = tetromino.cx + tetromino.cy - tetromino.py[i];
-		ynew[i] = tetromino.cy - tetromino.cx + tetromino.px[i];
-	}
-
-	//checking collisions
-	for (i = 0; i < 4; i++) {
-		if (grid[xnew[i]][ynew[i]] != 0 || xnew[i] < 0 || xnew[i] > 19 || ynew[i] < 0 || ynew[i] > 9) {
-			noCollide = false;
+void input(){
+	int left = 20992; // left arrow
+	int right = 21248; // right arrow
+	int up = 21503; // up arrow
+	int down = 21760; // down arrow
+	// checking inputs. used this so it only triggers once.
+	if (keypressed()) {
+		switch(readkey()) {
+			case left: // left arrow key
+				refresh = move(current, -1); // move left
+				check = false; // tell not to get anew tetromino YET
+				break;
+			case right: // right arrow key
+				refresh = move(current, 1); // move right
+				check = false;
+				break;
+			case up: // up arrow key
+				refresh = rotate(current); // rotates
+				check = false;
+				break;
+			case down: // down arrow key
+				if (!stop) { // drops tetromino down
+					stop = gravity(current); // move tetromino down by 1 space
+					drawTetromino(current); // draw tetromino to grid
+					frame_counter = 0; // reset frame counter
+					// tell the game to refresh the screen
+					refresh = true;
+					}
+				break;
 		}
 	}
-
-	if (!noCollide) {
-		drawTetromino(tetromino); // draw tetromino back to matrix
-		return false; // no need to update
-	}
-	if (noCollide) {
-		for (i = 0; i < 4; i++) {
-			tetromino.px[i] = xnew[i];
-			tetromino.py[i] = ynew[i];
-		}
-		drawTetromino(tetromino); // draw tetromino back to matrix
-		return true; // no need to update
-	}
-
 }
-END_OF_FUNCTION(rotate)
-

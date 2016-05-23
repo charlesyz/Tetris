@@ -1,3 +1,4 @@
+// main game function
 #include <stdio.h>
 #include <allegro.h>
 #include <stdlib.h>
@@ -54,33 +55,8 @@ bool game() {
 
 		//logic loop
 		while(speed_counter > 0) {
-			// checking inputs. used this so it only triggers once.
-			if (keypressed()) {
-				switch(readkey()) {
-					case 20992: // left arrow key
-						refresh = move(current, -1); // move left
-						check = false; // tell not to get anew tetromino YET
-						break;
-					case 21248: // right arrow key
-						refresh = move(current, 1); // move right
-						check = false;
-						break;
-					case 21504: // up arrow key
-						refresh = rotate(current); // rotates
-						check = false;
-						break;
-					case 21760: // down arrow key
-						if (!stop) { // drops tetromino down
-							stop = gravity(current); // move tetromino down by 1 space
-							drawTetromino(current); // draw tetromino to grid
-							frame_counter = 0; // reset frame counter
-
-							// tell the game to refresh the screen
-							refresh = true;
-						}
-						break;
-				}
-			}
+			// checking inputs
+			input();
 
 			// increment frame counter, decrement speed counter
 			frame_counter++;

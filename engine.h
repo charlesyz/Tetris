@@ -18,7 +18,10 @@ void complete(int line); //moves all spaces down above the completed line
 void scoreUpdate(int &lines, int &score, int &level, int numComplete);  // score function
 void speed(int &delay, int level); // changes speed based on level
 bool checkCollision(struct Tetromino tetromino, int dirx, int diry); // checks for collision, returns true or false.
+bool move(struct Tetromino &tetromino, int dir); // checks if the user wants to move, moves. returns if the user moved.
+bool rotate(struct Tetromino &tetromino); // function to rotate tetromino
 
+bool drop(struct Tetromino &tetromino); // checks if the user wants to drop, drops.
 bool loadbmp(BITMAP **bptr, char file[20]); // checks and loads bmp
 void highScore(int &high, int score); // highscore function
 
