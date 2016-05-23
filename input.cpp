@@ -8,11 +8,10 @@
 
 bool move(struct Tetromino &tetromino, int dir) {
 	int i, j, k = 0;
-	bool move = true;
 
 	// check collisions
 	if (checkCollision(tetromino, 0, dir)){
-		// the block moved
+		// the block did not move
 		return false;
 	}
 

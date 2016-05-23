@@ -1,4 +1,4 @@
-
+// all engine related functions: writing to matrix, speed counter, collisions
 #include <stdio.h>
 #include <allegro.h>
 #include <stdlib.h>
@@ -299,15 +299,14 @@ END_OF_FUNCTION(speed)
 
 bool checkCollision(struct Tetromino tetromino, int dirx, int diry){
 	int i;
-	bool collision = false;
-	
 	clearSpace(tetromino);
 	for (i = 0; i < 4; i++) {
 		// check if there is a collision
-		if (grid[tetromino.px[i] + dirx][tetromino.py[i] + diry] != 0 && tetromino.px[i] + dirx > 19 && tetromino.py[i] + diry <= 0 && tetromino.py[i] + diry > 10){
-			collision = true; // there is a collision
+		if (grid[tetromino.px[i] + dirx][tetromino.py[i] + diry] != 0 || tetromino.px[i] + dirx > 19 || tetromino.py[i] + diry < 0 || tetromino.py[i] + diry > 9){
+			drawTetromino(tetromino);
+			return true; // there is a collision
 		}
 	}
 	drawTetromino(tetromino);
-	return collision;
+	return false;
 }
