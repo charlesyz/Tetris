@@ -199,30 +199,6 @@ void clearSpace(struct Tetromino tetromino) {
 }
 END_OF_FUNCTION(clearSpace)
 
-bool gravity(struct Tetromino &tetromino) {
-
-	int i, j, k = 0;
-
-	// check collision
-	if (checkCollision(tetromino, 1, 0)){
-		// there was a collision
-		return true;
-	}
-	
-	clearSpace(tetromino);
-	// if there is no collision
-	for(i = 0; i < 4; i++) {
-		// move tetromino pieces down
-		tetromino.px[i]++;
-	}
-	// move tetromino centre
-	tetromino.cx++;
-	drawTetromino(tetromino);
-	
-	return false;
-}
-END_OF_FUNCTION(gravity)
-
 bool gameOver(struct Tetromino tetromino) {
 	int i;
 	// check if game over
@@ -263,6 +239,7 @@ void complete(int line) {
 	for (i = 0; i < 10; i++) {
 		grid[0][i] = 0;
 	}
+	
 }
 END_OF_FUNCTION(complete)
 
@@ -312,58 +289,6 @@ bool checkCollision(struct Tetromino tetromino, int dirx, int diry){
 	return false;
 }
 
-bool move(struct Tetromino &tetromino, int dir) {
-	int i, j, k = 0;
-
-	// check collisions
-	if (checkCollision(tetromino, 0, dir)){
-		// the block did not move
-		return false;
-	}
-
-	clearSpace(tetromino); // clear tetromino in matrix
-	
-	// if there is no collision
-	for(i = 0; i < 4; i++) {
-		// move tetromino pieces
-		tetromino.py[i] += dir;
-	}
-	// move tetromino centre position
-	tetromino.cy += dir;
-	
-	drawTetromino(tetromino); // draw tetromino to grid
-	return true;
-}
-END_OF_FUNCTION(move)
-
-bool rotate(struct Tetromino &tetromino) {
-	Tetromino newTetromino = tetromino;
-	int i;
-	bool collide = false; // is there a collision
-
-	clearSpace(tetromino); // clear tetromino in grid
-
-	// rotation algorithms
-	for (i = 0; i < 4; i++) {
-		newTetromino.px[i] = tetromino.cx + tetromino.cy - tetromino.py[i];
-		newTetromino.py[i] = tetromino.cy - tetromino.cx + tetromino.px[i];
-	}
-	// check collisions
-	collide = checkCollision(newTetromino, 0, 0);
-	
-	// if there is a collision
-	if (collide) {
-		drawTetromino(tetromino); // draw tetromino back to matrix
-		return false; // no need to update
-	}
-	else if (!collide) {
-		tetromino = newTetromino;
-		drawTetromino(tetromino); // draw tetromino back to matrix
-		return true; // no need to update
-	}
-}
-END_OF_FUNCTION(rotate)
-
 int highScore(int score){
 	FILE *fptr;
 	int high = 0;
@@ -388,8 +313,3 @@ int highScore(int score){
 }
 END_OF_FUNCTION(highScore)
 
-void drop(struct Tetromino &tetromino){
-	// move tetromino down untill it cant move anymore
-	while (!gravity(tetromino));
-}
-END_OF_FUNCTION(drop)

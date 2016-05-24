@@ -4,8 +4,11 @@
 #include <stdlib.h>
 #include "engine.h"
 #include "input.h"
-#include "game.h"
 #include "globals.h"
+
+// go to globals.cpp
+extern volatile long speed_counter;
+extern int grid[GRID_X][GRID_Y];
 
 bool game() {
 	struct Tetromino current; // current moving tetromino,
@@ -60,7 +63,23 @@ bool game() {
 				check = false;
 				refresh = true;
 			}
-
+			
+			// if the game should refresh the screen
+			if (refresh) {
+				// reset refresh
+				refresh = false;
+				allegro_message("BLEEP BLOOP");
+				//TEMPORARY PRINTING
+				system("cls");
+				for (int i = 0; i < 20; i++) {
+					for (int j = 0; j < 10; j++) {
+						printf("%d", grid[i][j]);
+					}
+					printf("\n");
+				}
+				printf("score = %d\nlevel = %d\nlines = %d\nhighscore = %d\n", score, level, lines, highScore(score));
+			}
+			
 			// increment frame counter, decrement speed counter
 			frame_counter++;
 			speed_counter--;
@@ -70,7 +89,7 @@ bool game() {
 		if (stop) {
 			stop = checkCollision(current, 1, 0);
 		}
-
+		
 		// every "delay", run gravity function
 		if (frame_counter > delay && !stop) {
 			stop = gravity(current); // move tetromino down by 1 space
@@ -107,7 +126,7 @@ bool game() {
 		}
 
 		// if there is a collision, get a new tetromino and check for game over
-		if (frame_counter > delay && stop) {
+		if (frame_counter > delay && stop) {  
 			// check if it's game over
 			if (check) {
 				getTetromino(buffer, current); // get a new tetromino
@@ -128,22 +147,6 @@ bool game() {
 		
 		// update delay
 		speed(delay, level);
-		
-		// if the game should refresh the screen
-		if (refresh) {
-			// reset refresh
-			refresh = false;
-
-			//TEMPORARY PRINTING
-			system("cls");
-			for (int i = 0; i < 20; i++) {
-				for (int j = 0; j < 10; j++) {
-					printf("%d", grid[i][j]);
-				}
-				printf("\n");
-			}
-			printf("score = %d\nlevel = %d\nlines = %d\nhighscore = %d\n", score, level, lines, highScore(score));
-		}
 
 		// if game over
 		if (lose) {

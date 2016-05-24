@@ -29,7 +29,7 @@ IncludeVersionInfo=0
 SupportXPThemes=0
 CompilerSet=3
 CompilerSettings=0000000100000000000000000
-UnitCount=10
+UnitCount=9
 
 [VersionInfo]
 Major=1
@@ -90,18 +90,8 @@ Priority=1000
 OverrideBuildCmd=0
 BuildCmd=
 
-[Unit7]
-FileName=game.h
-CompileCpp=1
-Folder=
-Compile=1
-Link=1
-Priority=1000
-OverrideBuildCmd=0
-BuildCmd=
-
 [Unit8]
-FileName=engine.cpp
+FileName=input.cpp
 CompileCpp=1
 Folder=
 Compile=1
@@ -111,7 +101,7 @@ OverrideBuildCmd=0
 BuildCmd=
 
 [Unit9]
-FileName=input.cpp
+FileName=globals.h
 CompileCpp=1
 Folder=
 Compile=1
@@ -142,6 +132,16 @@ BuildCmd=
 
 [Unit10]
 FileName=globals.h
+CompileCpp=1
+Folder=
+Compile=1
+Link=1
+Priority=1000
+OverrideBuildCmd=0
+BuildCmd=
+
+[Unit7]
+FileName=engine.cpp
 CompileCpp=1
 Folder=
 Compile=1
