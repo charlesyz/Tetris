@@ -7,30 +7,24 @@
 #include "globals.h"
 #include "engine.h"
 
-void input(){
-	int left = 20992; // left arrow
-	int right = 21248; // right arrow
-	int up = 21503; // up arrow
-	int down = 21760; // down arrow
+bool input(int &frame_counter, bool &stop, struct Tetromino &tetromino){
+	bool refresh = false;
 	// checking inputs. used this so it only triggers once.
 	if (keypressed()) {
 		switch(readkey()) {
-			case left: // left arrow key
-				refresh = move(current, -1); // move left
-				check = false; // tell not to get anew tetromino YET
+			case 20992: // left arrow key
+				refresh = move(tetromino, -1); // move left
 				break;
-			case right: // right arrow key
-				refresh = move(current, 1); // move right
-				check = false;
+			case 21248: // right arrow key
+				refresh = move(tetromino, 1); // move right
 				break;
-			case up: // up arrow key
-				refresh = rotate(current); // rotates
-				check = false;
+			case 21503: // up arrow key
+				refresh = rotate(tetromino); // rotates
 				break;
-			case down: // down arrow key
+			case 21760: // down arrow key
 				if (!stop) { // drops tetromino down
-					stop = gravity(current); // move tetromino down by 1 space
-					drawTetromino(current); // draw tetromino to grid
+					stop = gravity(tetromino); // move tetromino down by 1 space
+					drawTetromino(tetromino); // draw tetromino to grid
 					frame_counter = 0; // reset frame counter
 					// tell the game to refresh the screen
 					refresh = true;
@@ -38,4 +32,5 @@ void input(){
 				break;
 		}
 	}
+	return refresh; // nothing happened
 }

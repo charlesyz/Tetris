@@ -56,7 +56,10 @@ bool game() {
 		//logic loop
 		while(speed_counter > 0) {
 			// checking inputs
-			input();
+			if (input(frame_counter, stop, current)){
+				check = false;
+				refresh = true;
+			}
 
 			// increment frame counter, decrement speed counter
 			frame_counter++;

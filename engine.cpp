@@ -7,6 +7,9 @@
 #include "globals.h"
 #include "engine.h"
 
+extern volatile long speed_counter;
+extern int grid[GRID_X][GRID_Y];
+
 void increment_speed_counter() {
 	speed_counter++;
 }
@@ -336,39 +339,35 @@ bool move(struct Tetromino &tetromino, int dir) {
 END_OF_FUNCTION(move)
 
 bool rotate(struct Tetromino &tetromino) {
-	int xnew[4];// new x positions
-	int ynew[4];// new y positions
+	Tetromino newTetromino = tetromino;
 	int i;
-	bool noCollide = true; // is there a collision
+	bool collide = false; // is there a collision
 
 	clearSpace(tetromino); // clear tetromino in grid
 
 	// rotation algorithms
 	for (i = 0; i < 4; i++) {
-		xnew[i] = tetromino.cx + tetromino.cy - tetromino.py[i];
-		ynew[i] = tetromino.cy - tetromino.cx + tetromino.px[i];
+		newTetromino.px[i] = tetromino.cx + tetromino.cy - tetromino.py[i];
+		newTetromino.py[i] = tetromino.cy - tetromino.cx + tetromino.px[i];
 	}
-
-	//checking collisions
+	// check collisions
+	//collide = checkCollision(newTetromino, 0, 0);
 	for (i = 0; i < 4; i++) {
-		if (grid[xnew[i]][ynew[i]] != 0 || xnew[i] < 0 || xnew[i] > 19 || ynew[i] < 0 || ynew[i] > 9) {
-			noCollide = false;
+		if (grid[newTetromino.px[i]][newTetromino.py[i]] != 0 || newTetromino.px[i] < 0 || newTetromino.px[i] > 19 || newTetromino.py[i] < 0 || newTetromino.py[i] > 9) {
+			collide = true;
 		}
 	}
-
-	if (!noCollide) {
+	
+	// if there is a collision
+	if (collide) {
 		drawTetromino(tetromino); // draw tetromino back to matrix
 		return false; // no need to update
 	}
-	if (noCollide) {
-		for (i = 0; i < 4; i++) {
-			tetromino.px[i] = xnew[i];
-			tetromino.py[i] = ynew[i];
-		}
+	else if (!collide) {
+		tetromino = newTetromino;
 		drawTetromino(tetromino); // draw tetromino back to matrix
 		return true; // no need to update
 	}
-
 }
 END_OF_FUNCTION(rotate)
 

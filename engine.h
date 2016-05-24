@@ -1,9 +1,6 @@
 #ifndef ENGINE_H_
 #define ENGINE_H_
 
-extern volatile long speed_counter;
-extern int grid[GRID_X][GRID_Y];
-
 // function prototyping
 struct Tetromino randTetromino(); // get random tetromino
 void clearTetromino(struct Tetromino &structure); // clear tetromino
