@@ -269,8 +269,6 @@ END_OF_FUNCTION(complete)
 void scoreUpdate(int &lines, int &score, int &level, int numComplete){
 	int i = 0;
 	
-	printf("TEST\n");
-	
 	lines += numComplete;
 	if (lines % 10 == 0 && lines != 0){
 		level++;
@@ -351,12 +349,7 @@ bool rotate(struct Tetromino &tetromino) {
 		newTetromino.py[i] = tetromino.cy - tetromino.cx + tetromino.px[i];
 	}
 	// check collisions
-	//collide = checkCollision(newTetromino, 0, 0);
-	for (i = 0; i < 4; i++) {
-		if (grid[newTetromino.px[i]][newTetromino.py[i]] != 0 || newTetromino.px[i] < 0 || newTetromino.px[i] > 19 || newTetromino.py[i] < 0 || newTetromino.py[i] > 9) {
-			collide = true;
-		}
-	}
+	collide = checkCollision(newTetromino, 0, 0);
 	
 	// if there is a collision
 	if (collide) {
@@ -371,3 +364,32 @@ bool rotate(struct Tetromino &tetromino) {
 }
 END_OF_FUNCTION(rotate)
 
+int highScore(int score){
+	FILE *fptr;
+	int high = 0;
+	
+	fptr = fopen("highscore.txt", "r");
+	high = fscanf(fptr, "%d", &high);
+	// is the high score lower than the current score?
+	if (score > high){
+		high = score;
+		// close and reopen file
+		fclose(fptr);
+		fopen("highscore.txt", "w");
+		// write to file
+		fprintf(fptr, "%d", high);
+		fclose(fptr);
+	}
+	
+	if (high == 1){ // for some reason if the high score is 0 it sets it to 1.
+		high = 0;
+	}
+	return high;
+}
+END_OF_FUNCTION(highScore)
+
+void drop(struct Tetromino &tetromino){
+	// move tetromino down untill it cant move anymore
+	while (!gravity(tetromino));
+}
+END_OF_FUNCTION(drop)

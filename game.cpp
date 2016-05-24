@@ -142,7 +142,7 @@ bool game() {
 				}
 				printf("\n");
 			}
-			printf("score = %d\nlevel = %d\nlines = %d\n", score, level, lines);
+			printf("score = %d\nlevel = %d\nlines = %d\nhighscore = %d\n", score, level, lines, highScore(score));
 		}
 
 		// if game over
