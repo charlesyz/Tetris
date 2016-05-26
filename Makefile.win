@@ -4,8 +4,8 @@
 CPP      = g++.exe
 CC       = gcc.exe
 WINDRES  = windres.exe
-OBJ      = main.o game.o globals.o engine.o input.o
-LINKOBJ  = main.o game.o globals.o engine.o input.o
+OBJ      = main.o game.o globals.o engine.o input.o output.o
+LINKOBJ  = main.o game.o globals.o engine.o input.o output.o
 LIBS     = -L"C:/Program Files (x86)/Dev-Cpp/MinGW64/x86_64-w64-mingw32/lib32" -L"C:/Program Files (x86)/Dev-Cpp/lib" -static-libgcc -lalleg -m32
 INCS     = -I"C:/Program Files (x86)/Dev-Cpp/MinGW64/include" -I"C:/Program Files (x86)/Dev-Cpp/MinGW64/x86_64-w64-mingw32/include" -I"C:/Program Files (x86)/Dev-Cpp/MinGW64/lib/gcc/x86_64-w64-mingw32/4.9.2/include"
 CXXINCS  = -I"C:/Program Files (x86)/Dev-Cpp/MinGW64/include" -I"C:/Program Files (x86)/Dev-Cpp/MinGW64/x86_64-w64-mingw32/include" -I"C:/Program Files (x86)/Dev-Cpp/MinGW64/lib/gcc/x86_64-w64-mingw32/4.9.2/include" -I"C:/Program Files (x86)/Dev-Cpp/MinGW64/lib/gcc/x86_64-w64-mingw32/4.9.2/include/c++" -I"C:/Program Files (x86)/Dev-Cpp/include"
@@ -38,3 +38,6 @@ engine.o: engine.cpp
 
 input.o: input.cpp
 	$(CPP) -c input.cpp -o input.o $(CXXFLAGS)
+
+output.o: output.cpp
+	$(CPP) -c output.cpp -o output.o $(CXXFLAGS)

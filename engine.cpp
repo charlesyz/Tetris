@@ -152,7 +152,7 @@ struct Tetromino randTetromino() {
 			newTetromino.cx = 1;
 			newTetromino.cy = 4;
 			break;
-			// L shaped tetromino(blue)
+			// L shaped tetromino(orange)
 		case 7:
 			newTetromino.shape = 'J';
 			// setting x positions
@@ -247,7 +247,7 @@ void scoreUpdate(int &lines, int &score, int &level, int numComplete){
 	int i = 0;
 	
 	lines += numComplete;
-	if (lines % 10 == 0 && lines != 0){
+	if (lines % 5 == 0 && lines != 0){
 		level++;
 	}
 	
@@ -270,7 +270,7 @@ END_OF_FUNCTION(score)
 
 void speed(int &delay, int level){
 	if (level < 20){
-		delay = 50 - (level + 1) * 5;
+		delay = 50 - (level + 1) * 10;
 	}
 }
 END_OF_FUNCTION(speed)

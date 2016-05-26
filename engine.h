@@ -16,6 +16,5 @@ void speed(int &delay, int level); // changes speed based on level
 bool checkCollision(struct Tetromino tetromino, int dirx, int diry); // checks for collision, returns true or false.
 int highScore(int score); // highscore function
 
-bool loadbmp(BITMAP **bptr, char file[20]); // checks and loads bmp
 
 #endif

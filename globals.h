@@ -14,5 +14,10 @@ struct Tetromino{
 	float cy; // position of centre
 };
 
+// position of blocks for graphics
+struct Block{
+	int px;
+	int py;
+};
 #endif
 
