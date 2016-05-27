@@ -7,10 +7,6 @@
 #include "globals.h"
 #include "output.h"
 
-// go to globals.cpp
-extern volatile long speed_counter;
-extern int grid[GRID_X][GRID_Y];
-
 bool game() {
 	struct Tetromino current; // current moving tetromino,
 	struct Tetromino next; // curent buffer tetromino
@@ -24,16 +20,16 @@ bool game() {
 	int lines = 0;
 	int delay = 50;
 	int frame_counter = 0;
+	int input_counter = 0;
 	int completed[4]; // completed lines
 	int linesComplete; // # of lines completed at a time
 	int i, j;
-	
+
 	// initialise blockPos
 	initialiseBlockPos();
-	
+
 	// create blitmap, blit game backgroudn to buffer
 	buffer = create_bitmap(400,600);
-	blit(gameBackground, buffer, 0, 0, 0, 0, 400, 600);
 
 	// clear tetrominos and game grid
 	clearTetromino(current);
@@ -67,12 +63,16 @@ bool game() {
 
 		//logic loop
 		while(speed_counter > 0) {
-			// checking inputs
-			if (input(frame_counter, stop, current)){
-				check = false;
-				refresh = true;
+			if (input_counter > 10) {
+				// checking inputs
+				if (input(delay, frame_counter, stop, current)) {
+					check = false;
+					refresh = true;
+				}
+				input_counter = 0;
 			}
-			
+
+
 			// if the game should refresh the screen
 			if (refresh) {
 				// reset refresh
@@ -81,11 +81,16 @@ bool game() {
 				// reset bgrid
 				loadbmp(&bGrid, "game_grid.bmp");
 				
+				// clear buffer
+				clear(buffer);
+				// blit background to buffer
+				blit(gameBackground, buffer, 0, 0, 0, 0, 400, 600);
+				
 				// check elements of grid for colours
 				for (int i = 0; i < 20; i++) {
 					for (int j = 0; j < 10; j++) {
-						switch (grid[i][j]){
-							// blit that colour block to the corresponding block in the grid
+						switch (grid[i][j]) {
+								// blit that colour block to the corresponding block in the grid
 							case 1:
 								blit(bCyan, bGrid, 0, 0, blockPos[i][j].py, blockPos[i][j].px, 16, 16);
 								break;
@@ -110,11 +115,16 @@ bool game() {
 						}
 					}
 				}
-				
+				// printing scores
+				textprintf_ex(buffer, font, 210, 240, makecol(0,0,0), -1, "%d", score);
+				textprintf_ex(buffer, font, 210, 310, makecol(0,0,0), -1, "%d", lines);
+				textprintf_ex(buffer, font, 210, 370, makecol(0,0,0), -1, "%d", level);
+				textprintf_ex(buffer, font, 210, 440, makecol(0,0,0), -1, "%d", highScore(score));
+
 				// blit the grid to the buffer then the buffer to the screen
-				blit(bGrid, buffer, 0, 0, 35, 140, bGrid -> w, bGrid -> h);	
-				blit(buffer, screen, 0, 0, 0, 0, 400, 600);	
-				
+				blit(bGrid, buffer, 0, 0, 35, 140, bGrid -> w, bGrid -> h);
+				blit(buffer, screen, 0, 0, 0, 0, 400, 600);
+
 				//TEMPORARY PRINTING
 				system("cls");
 				for (int i = 0; i < 20; i++) {
@@ -124,20 +134,23 @@ bool game() {
 					printf("\n");
 				}
 				printf("score = %d\nlevel = %d\nlines = %d\nhighscore = %d\n", score, level, lines, highScore(score));
-				
-				
+
+
 			}
-			
+
 			// increment frame counter, decrement speed counter
 			frame_counter++;
 			speed_counter--;
+			input_counter++;
 		}
+		
 
 		// double check collisions
 		if (stop && !getnew) {
 			stop = checkCollision(current, 1, 0);
+			drawTetromino(current);
 		}
-		
+
 		// every "delay", run gravity function
 		if (frame_counter > delay && !stop) {
 			stop = gravity(current); // move tetromino down by 1 space
@@ -169,13 +182,13 @@ bool game() {
 				}
 			}
 			// increase score
-			if (linesComplete > 0){		
+			if (linesComplete > 0) {
 				scoreUpdate(lines, score, level, linesComplete);
 			}
 		}
 
 		// if there is a collision, get a new tetromino and check for game over
-		if (frame_counter > delay && stop) {  
+		if (frame_counter > delay && stop) {
 			// check if it's game over
 			if (check) {
 				getTetromino(next, current); // get a new tetromino
@@ -185,7 +198,7 @@ bool game() {
 					stop = false;
 					// tell the game to refresh the screen
 					refresh = true;
-					getnew = false; 
+					getnew = false;
 				}
 				// game is over
 				else {
@@ -194,7 +207,7 @@ bool game() {
 			}
 			frame_counter = 0; // reset frame counter
 		}
-		
+
 		// update delay
 		speed(delay, level);
 

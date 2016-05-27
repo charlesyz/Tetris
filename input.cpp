@@ -7,7 +7,7 @@
 #include "globals.h"
 #include "engine.h"
 
-bool input(int &frame_counter, bool &stop, struct Tetromino &tetromino){
+bool input(int delay, int &frame_counter, bool &stop, struct Tetromino &tetromino){
 	bool refresh = false;
 	// checking inputs. used this so it only triggers once.
 	if (keypressed()) {
@@ -19,7 +19,12 @@ bool input(int &frame_counter, bool &stop, struct Tetromino &tetromino){
 				refresh = move(tetromino, 1); // move right
 				break;
 			case 21504: // up arrow key
-				refresh = rotate(tetromino); // rotates
+				if (rotateCounter < 5){
+					if (frame_counter < delay - 1 && !stop){
+					refresh = rotate(tetromino); // rotates
+					rotateCounter++; // rotate counter resets on gravity
+					}
+				}
 				break;
 			case 19232: // spacebar drops tetromino
 				drop(tetromino);
@@ -42,14 +47,16 @@ bool input(int &frame_counter, bool &stop, struct Tetromino &tetromino){
 bool gravity(struct Tetromino &tetromino) {
 
 	int i, j, k = 0;
-
+	// reset rotateCounter
+	rotateCounter = 0;
+	
 	// check collision
 	if (checkCollision(tetromino, 1, 0)){
+		drawTetromino(tetromino);
 		// there was a collision
 		return true;
 	}
 	else {
-		clearSpace(tetromino);
 		// if there is no collision
 		for(i = 0; i < 4; i++) {
 			// move tetromino pieces down
@@ -70,11 +77,10 @@ bool move(struct Tetromino &tetromino, int dir) {
 	// check collisions
 	if (checkCollision(tetromino, 0, dir)){
 		// the block did not move
+		drawTetromino(tetromino);
 		return false;
 	}
 
-	clearSpace(tetromino); // clear tetromino in matrix
-	
 	// if there is no collision
 	for(i = 0; i < 4; i++) {
 		// move tetromino pieces
@@ -89,7 +95,7 @@ bool move(struct Tetromino &tetromino, int dir) {
 END_OF_FUNCTION(move)
 
 bool rotate(struct Tetromino &tetromino) {
-	Tetromino newTetromino = tetromino;
+	struct Tetromino newTetromino = tetromino;
 	int i;
 	bool collide = false; // is there a collision
 
@@ -100,7 +106,10 @@ bool rotate(struct Tetromino &tetromino) {
 		newTetromino.px[i] = tetromino.cx + tetromino.cy - tetromino.py[i];
 		newTetromino.py[i] = tetromino.cy - tetromino.cx + tetromino.px[i];
 	}
+	
 	// check collisions
+
+	
 	collide = checkCollision(newTetromino, 0, 0);
 	
 	// if there is a collision
@@ -110,8 +119,8 @@ bool rotate(struct Tetromino &tetromino) {
 	}
 	else if (!collide) {
 		tetromino = newTetromino;
-		drawTetromino(tetromino); // draw tetromino back to matrix
-		return true; // no need to update
+		drawTetromino(tetromino); // draw rotated tetrominoto matrix
+		return true; // please update update
 	}
 }
 END_OF_FUNCTION(rotate)

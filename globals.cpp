@@ -4,6 +4,7 @@
 // globals
 volatile long speed_counter = 0; // for game logic
 int grid[GRID_X][GRID_Y];	// hold grid info
+int rotateCounter = 0; // counter for number of rotates
 // x and y values of all blocks (for grpahics output)
 struct Block blockPos[GRID_X][GRID_Y];
 
@@ -17,5 +18,13 @@ BITMAP *bBlue = NULL;
 BITMAP *bPurple = NULL;
 BITMAP *bGreen = NULL;
 BITMAP *bOrange = NULL; 
+
+BITMAP *jTetromino = NULL;
+BITMAP *lTetromino = NULL;
+BITMAP *LTetromino = NULL;
+BITMAP *oTetromino = NULL;
+BITMAP *sTetromino = NULL;
+BITMAP *tTetromino = NULL;
+BITMAP *zTetromino = NULL;
 
 BITMAP *blocks[GRID_X * GRID_Y]; 

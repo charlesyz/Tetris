@@ -30,6 +30,7 @@ void initialisebmps(){
 	loadbmp(&bPurple, "purple_block.bmp");
 	loadbmp(&bGreen, "green_block.bmp");
 	loadbmp(&bOrange, "orange_block.bmp");
+	
 
 }
 END_OF_FUNCTION(initialisebmps)

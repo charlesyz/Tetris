@@ -1,6 +1,11 @@
 #ifndef ENGINE_H_
 #define ENGINE_H_
+#include "globals.h"
 
+// go to globals.cpp
+extern volatile long speed_counter;
+extern int grid[GRID_X][GRID_Y];
+extern int rotateCounter;
 // function prototyping
 struct Tetromino randTetromino(); // get random tetromino
 void clearTetromino(struct Tetromino &structure); // clear tetromino

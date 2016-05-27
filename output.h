@@ -16,6 +16,14 @@ extern BITMAP *bPurple;
 extern BITMAP *bGreen;
 extern BITMAP *bOrange;
 
+extern BITMAP *jTetromino = NULL;
+extern BITMAP *lTetromino = NULL;
+extern BITMAP *LTetromino = NULL;
+extern BITMAP *oTetromino = NULL;
+extern BITMAP *sTetromino = NULL;
+extern BITMAP *tTetromino = NULL;
+extern BITMAP *zTetromino = NULL;
+
 extern BITMAP *blocks[GRID_X * GRID_Y]; 
 
 void initialiseBlockPos(); // initialise graphics grid for game
