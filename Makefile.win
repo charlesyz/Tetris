@@ -4,11 +4,11 @@
 CPP      = g++.exe
 CC       = gcc.exe
 WINDRES  = windres.exe
-OBJ      = main.o game.o globals.o engine.o input.o output.o
-LINKOBJ  = main.o game.o globals.o engine.o input.o output.o
-LIBS     = -L"D:/Dev-Cpp/MinGW64/x86_64-w64-mingw32/lib32" -L"D:/Dev-Cpp/lib" -static-libgcc -lalleg -m32
-INCS     = -I"D:/Dev-Cpp/MinGW64/include" -I"D:/Dev-Cpp/MinGW64/x86_64-w64-mingw32/include" -I"D:/Dev-Cpp/MinGW64/lib/gcc/x86_64-w64-mingw32/4.9.2/include"
-CXXINCS  = -I"D:/Dev-Cpp/MinGW64/include" -I"D:/Dev-Cpp/MinGW64/x86_64-w64-mingw32/include" -I"D:/Dev-Cpp/MinGW64/lib/gcc/x86_64-w64-mingw32/4.9.2/include" -I"D:/Dev-Cpp/MinGW64/lib/gcc/x86_64-w64-mingw32/4.9.2/include/c++" -I"D:/Dev-Cpp/include"
+OBJ      = "source\ files/engine.o" "source\ files/game.o" "source\ files/globals.o" "source\ files/input.o" "source\ files/main.o" "source\ files/output.o"
+LINKOBJ  = "source files/engine.o" "source files/game.o" "source files/globals.o" "source files/input.o" "source files/main.o" "source files/output.o"
+LIBS     = -L"C:/Program Files (x86)/Dev-Cpp/MinGW64/x86_64-w64-mingw32/lib32" -L"C:/Program Files (x86)/Dev-Cpp/lib" -static-libgcc -lalleg -m32
+INCS     = -I"C:/Program Files (x86)/Dev-Cpp/MinGW64/include" -I"C:/Program Files (x86)/Dev-Cpp/MinGW64/x86_64-w64-mingw32/include" -I"C:/Program Files (x86)/Dev-Cpp/MinGW64/lib/gcc/x86_64-w64-mingw32/4.9.2/include"
+CXXINCS  = -I"C:/Program Files (x86)/Dev-Cpp/MinGW64/include" -I"C:/Program Files (x86)/Dev-Cpp/MinGW64/x86_64-w64-mingw32/include" -I"C:/Program Files (x86)/Dev-Cpp/MinGW64/lib/gcc/x86_64-w64-mingw32/4.9.2/include" -I"C:/Program Files (x86)/Dev-Cpp/MinGW64/lib/gcc/x86_64-w64-mingw32/4.9.2/include/c++" -I"C:/Program Files (x86)/Dev-Cpp/include"
 BIN      = Tetris.exe
 CXXFLAGS = $(CXXINCS) -m32
 CFLAGS   = $(INCS) -m32
@@ -24,20 +24,20 @@ clean: clean-custom
 $(BIN): $(OBJ)
 	$(CPP) $(LINKOBJ) -o $(BIN) $(LIBS)
 
-main.o: main.cpp
-	$(CPP) -c main.cpp -o main.o $(CXXFLAGS)
+"source\ files/engine.o": source\ files/engine.cpp
+	$(CPP) -c "source files/engine.cpp" -o "source files/engine.o" $(CXXFLAGS)
 
-game.o: game.cpp
-	$(CPP) -c game.cpp -o game.o $(CXXFLAGS)
+"source\ files/game.o": source\ files/game.cpp
+	$(CPP) -c "source files/game.cpp" -o "source files/game.o" $(CXXFLAGS)
 
-globals.o: globals.cpp
-	$(CPP) -c globals.cpp -o globals.o $(CXXFLAGS)
+"source\ files/globals.o": source\ files/globals.cpp
+	$(CPP) -c "source files/globals.cpp" -o "source files/globals.o" $(CXXFLAGS)
 
-engine.o: engine.cpp
-	$(CPP) -c engine.cpp -o engine.o $(CXXFLAGS)
+"source\ files/input.o": source\ files/input.cpp
+	$(CPP) -c "source files/input.cpp" -o "source files/input.o" $(CXXFLAGS)
 
-input.o: input.cpp
-	$(CPP) -c input.cpp -o input.o $(CXXFLAGS)
+"source\ files/main.o": source\ files/main.cpp
+	$(CPP) -c "source files/main.cpp" -o "source files/main.o" $(CXXFLAGS)
 
-output.o: output.cpp
-	$(CPP) -c output.cpp -o output.o $(CXXFLAGS)
+"source\ files/output.o": source\ files/output.cpp
+	$(CPP) -c "source files/output.cpp" -o "source files/output.o" $(CXXFLAGS)

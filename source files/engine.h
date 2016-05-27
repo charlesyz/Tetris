@@ -16,10 +16,7 @@ void clearSpace(struct Tetromino tetromino); // clears current tetromino in the 
 bool gameOver(struct Tetromino tetromino); // checks if gameover
 bool isComplete(int line); // checks what lines are complete
 void complete(int line); //moves all spaces down above the completed line
-void scoreUpdate(int &lines, int &score, int &level, int numComplete);  // score function
-void speed(int &delay, int level); // changes speed based on level
 bool checkCollision(struct Tetromino tetromino, int dirx, int diry); // checks for collision, returns true or false.
-int highScore(int score); // highscore function
 
 
 #endif

@@ -77,54 +77,7 @@ bool game() {
 			if (refresh) {
 				// reset refresh
 				refresh = false;
-				
-				// reset bgrid
-				loadbmp(&bGrid, "game_grid.bmp");
-				
-				// clear buffer
-				clear(buffer);
-				// blit background to buffer
-				blit(gameBackground, buffer, 0, 0, 0, 0, 400, 600);
-				
-				// check elements of grid for colours
-				for (int i = 0; i < 20; i++) {
-					for (int j = 0; j < 10; j++) {
-						switch (grid[i][j]) {
-								// blit that colour block to the corresponding block in the grid
-							case 1:
-								blit(bCyan, bGrid, 0, 0, blockPos[i][j].py, blockPos[i][j].px, 16, 16);
-								break;
-							case 2:
-								blit(bYellow, bGrid, 0, 0, blockPos[i][j].py, blockPos[i][j].px, 16, 16);
-								break;
-							case 3:
-								blit(bPurple, bGrid, 0, 0, blockPos[i][j].py, blockPos[i][j].px, 16, 16);
-								break;
-							case 4:
-								blit(bGreen, bGrid, 0, 0, blockPos[i][j].py, blockPos[i][j].px, 16, 16);
-								break;
-							case 5:
-								blit(bRed, bGrid, 0, 0, blockPos[i][j].py, blockPos[i][j].px, 16, 16);
-								break;
-							case 6:
-								blit(bBlue, bGrid, 0, 0, blockPos[i][j].py, blockPos[i][j].px, 16, 16);
-								break;
-							case 7:
-								blit(bOrange, bGrid, 0, 0, blockPos[i][j].py, blockPos[i][j].px, 16, 16);
-								break;
-						}
-					}
-				}
-				// printing scores
-				textprintf_ex(buffer, font, 210, 240, makecol(0,0,0), -1, "%d", score);
-				textprintf_ex(buffer, font, 210, 310, makecol(0,0,0), -1, "%d", lines);
-				textprintf_ex(buffer, font, 210, 370, makecol(0,0,0), -1, "%d", level);
-				textprintf_ex(buffer, font, 210, 440, makecol(0,0,0), -1, "%d", highScore(score));
-
-				// blit the grid to the buffer then the buffer to the screen
-				blit(bGrid, buffer, 0, 0, 35, 140, bGrid -> w, bGrid -> h);
-				blit(buffer, screen, 0, 0, 0, 0, 400, 600);
-
+				outputGame(next, score, lines, level);
 				//TEMPORARY PRINTING
 				system("cls");
 				for (int i = 0; i < 20; i++) {
@@ -134,7 +87,7 @@ bool game() {
 					printf("\n");
 				}
 				printf("score = %d\nlevel = %d\nlines = %d\nhighscore = %d\n", score, level, lines, highScore(score));
-
+				
 
 			}
 

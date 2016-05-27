@@ -20,8 +20,8 @@ BITMAP *bGreen = NULL;
 BITMAP *bOrange = NULL; 
 
 BITMAP *jTetromino = NULL;
+BITMAP *lineTetromino = NULL;
 BITMAP *lTetromino = NULL;
-BITMAP *LTetromino = NULL;
 BITMAP *oTetromino = NULL;
 BITMAP *sTetromino = NULL;
 BITMAP *tTetromino = NULL;

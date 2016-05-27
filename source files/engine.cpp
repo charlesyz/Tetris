@@ -154,7 +154,7 @@ struct Tetromino randTetromino() {
 			break;
 			// L shaped tetromino(orange)
 		case 7:
-			newTetromino.shape = 'J';
+			newTetromino.shape = 'L';
 			// setting x positions
 			newTetromino.px[0] = 0;
 			newTetromino.px[1] = 1;
@@ -243,38 +243,6 @@ void complete(int line) {
 }
 END_OF_FUNCTION(complete)
 
-void scoreUpdate(int &lines, int &score, int &level, int numComplete){
-	int i = 0;
-	
-	lines += numComplete;
-	if (lines % 5 == 0 && lines != 0){
-		level++;
-	}
-	
-	switch(numComplete){
-		case 1:
-			score += 50*(level + 1);
-			break;
-		case 2:
-			score += 150*(level + 1);
-			break;
-		case 3:
-			score += 350*(level + 1);
-			break;
-		case 4:
-			score += 1000*(level + 1);
-			break; 
-	}
-}
-END_OF_FUNCTION(score)
-
-void speed(int &delay, int level){
-	if (level < 20){
-		delay = 50 - (level + 1) * 10;
-	}
-}
-END_OF_FUNCTION(speed)
-
 bool checkCollision(struct Tetromino tetromino, int dirx, int diry){
 	int i;
 	clearSpace(tetromino);
@@ -287,27 +255,4 @@ bool checkCollision(struct Tetromino tetromino, int dirx, int diry){
 	return false;
 }
 
-int highScore(int score){
-	FILE *fptr;
-	int high = 0;
-	
-	fptr = fopen("highscore.txt", "r");
-	high = fscanf(fptr, "%d", &high);
-	// is the high score lower than the current score?
-	if (score > high){
-		high = score;
-		// close and reopen file
-		fclose(fptr);
-		fopen("highscore.txt", "w");
-		// write to file
-		fprintf(fptr, "%d", high);
-		fclose(fptr);
-	}
-	
-	if (high == 1){ // for some reason if the high score is 0 it sets it to 1.
-		high = 0;
-	}
-	return high;
-}
-END_OF_FUNCTION(highScore)
 
