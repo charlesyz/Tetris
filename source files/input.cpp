@@ -7,8 +7,14 @@
 #include "globals.h"
 #include "engine.h"
 
-bool input(int delay, int &frame_counter, bool &stop, struct Tetromino &tetromino){
+bool input(bool &pause,int delay, int &frame_counter, bool &stop, struct Tetromino &tetromino){
 	bool refresh = false;
+	bool lock = false;
+	
+	if (frame_counter > 10 && frame_counter % 1000 == 0){
+		lock = false;
+	}
+	
 	// checking inputs. used this so it only triggers once.
 	if (keypressed()) {
 		switch(readkey()) {
@@ -18,11 +24,13 @@ bool input(int delay, int &frame_counter, bool &stop, struct Tetromino &tetromin
 			case 21248: // right arrow key
 				refresh = move(tetromino, 1); // move right
 				break;
-			case 21504: // up arrow key
-				if (rotateCounter < 5){
-					if (frame_counter < delay - 1 && !stop){
+			case 21504: // up arrow ke
+				// you can only rotate 5 times in a row, if it's not time for the tile to move by gravity, and if the tile isnt "stopped"
+				if (rotateCounter < 5 && frame_counter < delay && !stop){
 					refresh = rotate(tetromino); // rotates
-					rotateCounter++; // rotate counter resets on gravity
+					// if the piece was rotated, increment rotate counter
+					if (refresh){
+						rotateCounter++; // rotate counter resets on gravity
 					}
 				}
 				break;
@@ -38,9 +46,15 @@ bool input(int delay, int &frame_counter, bool &stop, struct Tetromino &tetromin
 					refresh = true;
 					}
 				break;
+			case 4208: // p key
+				if (!pause && !lock){
+					pause = true;
+					lock = true;
+				}
+				break;
 		}
-		clear_keybuf();
 	}
+	clear_keybuf();
 	return refresh; // nothing happened
 }
 
@@ -108,13 +122,19 @@ bool rotate(struct Tetromino &tetromino) {
 	}
 	
 	// check collisions
-
+	for (i = 0; i < 4; i++) {
+		// check if there is a collision
+		if (grid[newTetromino.px[i]][newTetromino.py[i]] != 0 || newTetromino.px[i] > 19
+		    || newTetromino.py[i] < 0 || newTetromino.py[i] > 9){
+			collide = true; // there is a collision
+		}
+	}
 	
-	collide = checkCollision(newTetromino, 0, 0);
+	//collide = checkCollision(newTetromino, 0, 0); DOESNT WORK FOR SOME REASON????
 	
 	// if there is a collision
 	if (collide) {
-		drawTetromino(tetromino); // draw tetromino back to matrix
+		drawTetromino(tetromino); // draw tetromino back to matrix without changing
 		return false; // no need to update
 	}
 	else if (!collide) {

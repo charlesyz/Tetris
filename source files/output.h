@@ -29,7 +29,7 @@ extern BITMAP *blocks[GRID_X * GRID_Y];
 // functions
 void initialiseBlockPos(); // initialise graphics grid for game
 void initialisebmps(); // load all needed bmps
-bool loadbmp(BITMAP **bptr, char file[20]); // checks and loads bmp
+bool loadbmp(BITMAP **bptr, char const file[20]); // checks and loads bmp
 void outputGame(struct Tetromino next, int score, int lines, int level); // output game elements and graphics
 void scoreUpdate(int &lines, int &score, int &level, int numComplete);  // score function
 void speed(int &delay, int level); // changes speed based on level

@@ -2,6 +2,7 @@
 #include <stdio.h>
 #include <allegro.h>
 #include <stdlib.h>
+#include <time.h>
 #include "engine.h"
 #include "input.h"
 #include "globals.h"
@@ -11,19 +12,22 @@ bool game() {
 	struct Tetromino current; // current moving tetromino,
 	struct Tetromino next; // curent buffer tetromino
 	bool stop = false; //did the tetromino collide
-	bool refresh = false; // should the game refresh the screen
+	bool refresh = true; // should the game refresh the screen
 	bool lose = false; // is the game over
 	bool check = false; // should the game recheck
-	bool getnew = false;
+	bool pause = false;
 	int level = 0;
 	int score = 0;
 	int lines = 0;
-	int delay = 50;
+	int delay = 80;
 	int frame_counter = 0;
 	int input_counter = 0;
+	int reset_counter = 0; // timer for a delay to get a new tetromino
 	int completed[4]; // completed lines
 	int linesComplete; // # of lines completed at a time
 	int i, j;
+
+	srand(time(NULL)); //random number seed
 
 	// initialise blockPos
 	initialiseBlockPos();
@@ -43,15 +47,6 @@ bool game() {
 	clearSpace(current);
 	drawTetromino(current);
 
-	//TEMPORARY PRINTING
-	system("cls");
-	for (i = 0; i < 20; i++) {
-		for (j = 0; j < 10; j++) {
-			printf("%d", grid[i][j]);
-		}
-		printf("\n");
-	}
-
 	while(!key[KEY_ESC]) { //If the user hits escape, quit the program{
 
 		// reset check boolean
@@ -63,32 +58,78 @@ bool game() {
 
 		//logic loop
 		while(speed_counter > 0) {
-			if (input_counter > 10) {
+			
+			if (input_counter > 10){
 				// checking inputs
-				if (input(delay, frame_counter, stop, current)) {
+				if (input(pause, delay, frame_counter, stop, current)) {
 					check = false;
 					refresh = true;
 				}
+				// reset input_counter
 				input_counter = 0;
+				clear_keybuf();
 			}
-
-
+			
 			// if the game should refresh the screen
 			if (refresh) {
 				// reset refresh
 				refresh = false;
-				outputGame(next, score, lines, level);
-				//TEMPORARY PRINTING
-				system("cls");
-				for (int i = 0; i < 20; i++) {
-					for (int j = 0; j < 10; j++) {
-						printf("%d", grid[i][j]);
-					}
-					printf("\n");
-				}
-				printf("score = %d\nlevel = %d\nlines = %d\nhighscore = %d\n", score, level, lines, highScore(score));
 				
+				outputGame(next, score, lines, level);
+				
+				system("cls");
+				printf("%d", delay);
 
+			}
+			
+			// if there is a collision, check if lines are complete
+			if (stop && check) {
+				j = 0; // set j to 0
+				linesComplete = 0; // reset lines complete
+				
+				if (reset_counter > 25){
+					// check if line is complete
+					for (i = 0; i < 20; i++) {
+						if (isComplete(i)) {
+							completed[j] = i;
+							j++;
+							linesComplete++; // increment number of lines complete
+						}
+					}
+					// move down completed lines
+					for (i = 0; i < 4; i++) {
+						if (completed[i] != -1) {
+							complete(completed[i]);
+							refresh = true;
+							frame_counter = 0; // reset frame counter
+						}
+					}
+					// increase score
+					if (linesComplete > 0) {
+						scoreUpdate(lines, score, level, linesComplete);
+					}
+					 // get a new tetromino
+					getTetromino(next, current);
+					
+					if (!gameOver(current)) {
+						// draw tetromino to grid
+						drawTetromino(current);
+						// reset stop
+						stop = false;
+						// tell the game to refresh the screen
+						refresh = true;
+					}
+					// game is over
+					else {
+						lose = true;
+					}
+					
+					reset_counter = 0;
+				}
+				
+				else{
+					reset_counter++;
+				}
 			}
 
 			// increment frame counter, decrement speed counter
@@ -97,9 +138,14 @@ bool game() {
 			input_counter++;
 		}
 		
+		// if the user wants to pause
+		if (pause){
+			allegro_message("You are paused. Press OK to unpause");
+			pause = false;
+		}
 
 		// double check collisions
-		if (stop && !getnew) {
+		if (stop) {
 			stop = checkCollision(current, 1, 0);
 			drawTetromino(current);
 		}
@@ -111,54 +157,6 @@ bool game() {
 
 			// tell the game to refresh the screen
 			refresh = true;
-		}
-
-		// if there is a collision, check if lines are complete
-		if (frame_counter > delay && stop && check) {
-			j = 0; // set j to 0
-			linesComplete = 0; // reset lines complete
-			// check if line is complete
-			for (i = 0; i < 20; i++) {
-				if (isComplete(i)) {
-					completed[j] = i;
-					j++;
-					linesComplete++; // increment number of lines complete
-				}
-			}
-			// move down completed lines
-			for (i = 0; i < 4; i++) {
-				if (completed[i] != -1) {
-					complete(completed[i]);
-					refresh = true;
-					frame_counter = 0; // reset frame counter
-					getnew = true; // get a new tetormino
-				}
-			}
-			// increase score
-			if (linesComplete > 0) {
-				scoreUpdate(lines, score, level, linesComplete);
-			}
-		}
-
-		// if there is a collision, get a new tetromino and check for game over
-		if (frame_counter > delay && stop) {
-			// check if it's game over
-			if (check) {
-				getTetromino(next, current); // get a new tetromino
-				if (!gameOver(current)) {
-					drawTetromino(current); // draw tetromino to grid
-					// reset stop
-					stop = false;
-					// tell the game to refresh the screen
-					refresh = true;
-					getnew = false;
-				}
-				// game is over
-				else {
-					lose = true;
-				}
-			}
-			frame_counter = 0; // reset frame counter
 		}
 
 		// update delay

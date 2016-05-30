@@ -72,7 +72,7 @@ void outputGame(struct Tetromino next, int score, int lines, int level){
 	// printing scores
 	textprintf_ex(buffer, font, 210, 240, makecol(0,0,0), -1, "%d", score);
 	textprintf_ex(buffer, font, 210, 310, makecol(0,0,0), -1, "%d", lines);
-	textprintf_ex(buffer, font, 210, 370, makecol(0,0,0), -1, "%d", level);
+	textprintf_ex(buffer, font, 210, 370, makecol(0,0,0), -1, "%d", level + 1);
 	textprintf_ex(buffer, font, 210, 440, makecol(0,0,0), -1, "%d", highScore(score));
 
 	// blit the grid to the buffer then the buffer to the screen
@@ -117,13 +117,12 @@ void initialisebmps(){
 	loadbmp(&jTetromino, "bitmaps/j_tetromino.bmp");
 	loadbmp(&lTetromino, "bitmaps/l_tetromino.bmp");
 	
-
 }
 END_OF_FUNCTION(initialisebmps)
 
-bool loadbmp(BITMAP **ptr, char fileName[20]) {	
-	*ptr = load_bitmap(fileName, NULL);
-	if (!*ptr) {
+bool loadbmp(BITMAP **fptr, char const fileName[20]) {	
+	*fptr = load_bitmap(fileName, NULL);
+	if (!*fptr) {
     	printf("Could not find %s\n", fileName);
     	allegro_message("Could not open file.");
     	return false;
@@ -136,7 +135,7 @@ void scoreUpdate(int &lines, int &score, int &level, int numComplete){
 	int i = 0;
 	
 	lines += numComplete;
-	if (lines % 5 == 0 && lines != 0){
+	if (lines % 5 == 0 && lines != 0 && level < 19){
 		level++;
 	}
 	
@@ -158,9 +157,9 @@ void scoreUpdate(int &lines, int &score, int &level, int numComplete){
 END_OF_FUNCTION(score)
 
 void speed(int &delay, int level){
-	if (level < 20){
-		delay = 50 - (level + 1) * 10;
-	}
+	
+	delay = 80 - (4 * level);
+	
 }
 END_OF_FUNCTION(speed)
 
@@ -180,12 +179,15 @@ int highScore(int score){
 		fopen("highscore.txt", "w");
 		// write to file
 		fprintf(fptr, "%d", high);
-		fclose(fptr);
 	}
 	
 	if (high == 1){ // for some reason if the high score is 0 it sets it to 1.
 		high = 0;
 	}
+	
+	// close file
+	fclose(fptr);
+	
 	return high;
 }
 END_OF_FUNCTION(highScore)
