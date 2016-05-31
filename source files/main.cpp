@@ -4,9 +4,9 @@
 #include "main.h"
 
 int main(int argc, char *argv[]) {
-
-	bool again = true;
+	int level = 0;
 	
+	bool again = true;
 	if (aInit() != 0) {
 		allegro_message("ERROR INITIALIZING ALLEGRO");
 		return -1;
@@ -15,8 +15,13 @@ int main(int argc, char *argv[]) {
 	// load bmps
 	initialisebmps();
 	
+	// call main menu function
+	again = menu(level);
+	
+	clear(buffer);
+	
 	while (again) {
-		again = game(); // main game
+		again = game(level); // main game
 	}
 
 	return 0;

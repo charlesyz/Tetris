@@ -8,6 +8,8 @@ extern struct Block blockPos[GRID_X][GRID_Y];
 extern BITMAP *buffer;
 extern BITMAP *bGrid;
 extern BITMAP *gameBackground;
+extern BITMAP *mainMenu;
+
 extern BITMAP *bRed;
 extern BITMAP *bYellow;
 extern BITMAP *bCyan;
@@ -23,6 +25,7 @@ extern BITMAP *oTetromino;
 extern BITMAP *sTetromino;
 extern BITMAP *tTetromino;
 extern BITMAP *zTetromino;
+
 
 extern BITMAP *blocks[GRID_X * GRID_Y]; 
 

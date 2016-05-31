@@ -2,10 +2,15 @@
 #define MAIN_H_
 
 // in game.cpp
-bool game(); // main game
+bool game(int &level); // main game
+bool menu(int &level); // main menu function
+
 // in engine.cpp
 void increment_speed_counter(); // speed counter logic
 int aInit(); // initialises allegro and keyboard etc
 // in output.cpp
 void initialisebmps(); // load all needed bmps
+
+//in globals.cpp
+extern BITMAP *buffer;
 #endif

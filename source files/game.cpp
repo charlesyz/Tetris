@@ -7,8 +7,52 @@
 #include "input.h"
 #include "globals.h"
 #include "output.h"
+bool menu(int &level){
+	bool lock = false;
+	int counter = 0;
 
-bool game() {
+	// create blitmap, blit main menu to buffer
+	buffer = create_bitmap(400,600);
+	blit(mainMenu, buffer, 0, 0, 0, 0, 400, 600);
+	
+	while (!key[KEY_ESC]){
+		while(speed_counter > 0) {
+			// reset lock every 200 ms	
+			if (counter > 20){
+				lock = false;
+				counter = 0;
+			}
+			
+			// if mouse is clicked and lock is false
+			if (mouse_b & 1 && !lock){
+				// if play game button
+				if (mouse_x > 100 && mouse_x < 320 && mouse_y > 210 && mouse_y < 259){
+					return true;
+				}
+				// if left arrow button, decrement level
+				if (mouse_x > 111 && mouse_x < 129 && mouse_y > 291 && mouse_y < 314 && level > 0){
+					level--;
+				}
+				// if left arrow button, increment level
+				if (mouse_x > 291 && mouse_x < 398 && mouse_y > 291 && mouse_y < 314 && level < 19){
+					level++;
+				}
+				
+				lock = true;
+			}
+			speed_counter--;
+			counter++;
+					
+			blit(mainMenu, buffer, 0, 0, 0, 0, 400, 600);
+			textprintf_ex(buffer, font, 260, 300, makecol(0,0,0), -1, "%d", level + 1);
+			blit(buffer, screen, 0, 0, 0, 0, 400, 600);
+		}
+	}
+	
+	return false;
+}
+
+bool game(int &level) {
 	struct Tetromino current; // current moving tetromino,
 	struct Tetromino next; // curent buffer tetromino
 	bool stop = false; //did the tetromino collide
@@ -16,7 +60,6 @@ bool game() {
 	bool lose = false; // is the game over
 	bool check = false; // should the game recheck
 	bool pause = false;
-	int level = 0;
 	int score = 0;
 	int lines = 0;
 	int delay = 80;
@@ -31,9 +74,6 @@ bool game() {
 
 	// initialise blockPos
 	initialiseBlockPos();
-
-	// create blitmap, blit game backgroudn to buffer
-	buffer = create_bitmap(400,600);
 
 	// clear tetrominos and game grid
 	clearTetromino(current);
@@ -101,7 +141,6 @@ bool game() {
 						if (completed[i] != -1) {
 							complete(completed[i]);
 							refresh = true;
-							frame_counter = 0; // reset frame counter
 						}
 					}
 					// increase score
@@ -123,7 +162,7 @@ bool game() {
 					else {
 						lose = true;
 					}
-					
+					frame_counter = 0; // reset frame counter
 					reset_counter = 0;
 				}
 				

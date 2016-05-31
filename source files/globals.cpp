@@ -11,6 +11,8 @@ struct Block blockPos[GRID_X][GRID_Y];
 BITMAP *buffer = NULL;
 BITMAP *bGrid = NULL;
 BITMAP *gameBackground = NULL;
+BITMAP *mainMenu = NULL;
+
 BITMAP *bRed = NULL;
 BITMAP *bYellow = NULL;
 BITMAP *bCyan = NULL;

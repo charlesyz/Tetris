@@ -5,6 +5,8 @@
 #include "output.h"
 #include "globals.h"
 
+
+
 void outputGame(struct Tetromino next, int score, int lines, int level){
 	
 	// reset bgrid
@@ -99,6 +101,7 @@ void initialisebmps(){
 	// loading bmps	
 	loadbmp(&bGrid, "bitmaps/game_grid.bmp");
 	loadbmp(&gameBackground, "bitmaps/game_interface.bmp");
+	loadbmp(&mainMenu, "bitmaps/main_menu.bmp");
 	
 	loadbmp(&bRed, "bitmaps/red_block.bmp");
 	loadbmp(&bYellow, "bitmaps/yellow_block.bmp");
@@ -107,7 +110,6 @@ void initialisebmps(){
 	loadbmp(&bPurple, "bitmaps/purple_block.bmp");
 	loadbmp(&bGreen, "bitmaps/green_block.bmp");
 	loadbmp(&bOrange, "bitmaps/orange_block.bmp");
-	
 	
 	loadbmp(&oTetromino, "bitmaps/o_tetromino.bmp");
 	loadbmp(&sTetromino, "bitmaps/s_tetromino.bmp");
@@ -130,6 +132,8 @@ bool loadbmp(BITMAP **fptr, char const fileName[20]) {
 	return true;
 }
 END_OF_FUNCTION(checkAndLoad)
+
+
 
 void scoreUpdate(int &lines, int &score, int &level, int numComplete){
 	int i = 0;
