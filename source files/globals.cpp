@@ -12,6 +12,8 @@ BITMAP *buffer = NULL;
 BITMAP *bGrid = NULL;
 BITMAP *gameBackground = NULL;
 BITMAP *mainMenu = NULL;
+BITMAP *helpMenu = NULL;
+BITMAP *creditsMenu = NULL;
 
 BITMAP *bRed = NULL;
 BITMAP *bYellow = NULL;

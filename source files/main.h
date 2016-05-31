@@ -2,7 +2,7 @@
 #define MAIN_H_
 
 // in game.cpp
-bool game(int &level); // main game
+bool game(int level); // main game
 bool menu(int &level); // main menu function
 
 // in engine.cpp

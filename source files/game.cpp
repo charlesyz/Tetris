@@ -30,12 +30,26 @@ bool menu(int &level){
 					return true;
 				}
 				// if left arrow button, decrement level
-				if (mouse_x > 111 && mouse_x < 129 && mouse_y > 291 && mouse_y < 314 && level > 0){
+				else if (mouse_x > 111 && mouse_x < 129 && mouse_y > 291 && mouse_y < 314 && level > 0){
 					level--;
 				}
-				// if left arrow button, increment level
-				if (mouse_x > 291 && mouse_x < 398 && mouse_y > 291 && mouse_y < 314 && level < 19){
+				// if right arrow button, increment level
+				else if (mouse_x > 291 && mouse_x < 398 && mouse_y > 291 && mouse_y < 314 && level < 19){
 					level++;
+				}
+				// if help button
+				else if (mouse_x > 100 && mouse_x < 320 && mouse_y > 345 && mouse_y < 398){
+					while (!key[KEY_BACKSPACE]){
+						blit(helpMenu, buffer, 0, 0, 0, 0, 400, 600);
+						blit(buffer, screen, 0, 0, 0, 0, 400, 600);
+					}
+				}
+				// if credits button
+				else if (mouse_x > 100 && mouse_x < 320 && mouse_y > 415 && mouse_y < 466){
+					while (!key[KEY_BACKSPACE]){
+						blit(creditsMenu, buffer, 0, 0, 0, 0, 400, 600);
+						blit(buffer, screen, 0, 0, 0, 0, 400, 600);
+					}
 				}
 				
 				lock = true;
@@ -52,7 +66,7 @@ bool menu(int &level){
 	return false;
 }
 
-bool game(int &level) {
+bool game(int level) {
 	struct Tetromino current; // current moving tetromino,
 	struct Tetromino next; // curent buffer tetromino
 	bool stop = false; //did the tetromino collide
@@ -105,6 +119,9 @@ bool game(int &level) {
 					check = false;
 					refresh = true;
 				}
+				
+				
+				
 				// reset input_counter
 				input_counter = 0;
 				clear_keybuf();

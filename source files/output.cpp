@@ -5,8 +5,6 @@
 #include "output.h"
 #include "globals.h"
 
-
-
 void outputGame(struct Tetromino next, int score, int lines, int level){
 	
 	// reset bgrid
@@ -102,6 +100,8 @@ void initialisebmps(){
 	loadbmp(&bGrid, "bitmaps/game_grid.bmp");
 	loadbmp(&gameBackground, "bitmaps/game_interface.bmp");
 	loadbmp(&mainMenu, "bitmaps/main_menu.bmp");
+	loadbmp(&helpMenu, "bitmaps/help_menu.bmp");
+	loadbmp(&creditsMenu, "bitmaps/credits_menu.bmp");
 	
 	loadbmp(&bRed, "bitmaps/red_block.bmp");
 	loadbmp(&bYellow, "bitmaps/yellow_block.bmp");

@@ -9,6 +9,8 @@ extern BITMAP *buffer;
 extern BITMAP *bGrid;
 extern BITMAP *gameBackground;
 extern BITMAP *mainMenu;
+extern BITMAP *helpMenu;
+extern BITMAP *creditsMenu;
 
 extern BITMAP *bRed;
 extern BITMAP *bYellow;
