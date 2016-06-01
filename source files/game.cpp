@@ -7,16 +7,20 @@
 #include "input.h"
 #include "globals.h"
 #include "output.h"
+
 bool menu(int &level){
 	bool lock = false;
 	int counter = 0;
-
+	
+	clear_keybuf();
+	
 	// create blitmap, blit main menu to buffer
 	buffer = create_bitmap(400,600);
 	blit(mainMenu, buffer, 0, 0, 0, 0, 400, 600);
 	
 	while (!key[KEY_ESC]){
 		while(speed_counter > 0) {
+			
 			// reset lock every 200 ms	
 			if (counter > 20){
 				lock = false;
@@ -69,11 +73,13 @@ bool menu(int &level){
 bool game(int level) {
 	struct Tetromino current; // current moving tetromino,
 	struct Tetromino next; // curent buffer tetromino
+	struct Tetromino hold; // hold tetromino
 	bool stop = false; //did the tetromino collide
 	bool refresh = true; // should the game refresh the screen
 	bool lose = false; // is the game over
 	bool check = false; // should the game recheck
 	bool pause = false;
+	bool canSwap = true;
 	int score = 0;
 	int lines = 0;
 	int delay = 80;
@@ -92,6 +98,7 @@ bool game(int level) {
 	// clear tetrominos and game grid
 	clearTetromino(current);
 	clearTetromino(next);
+	clearTetromino(hold);
 	clearMatrix();
 
 	current = randTetromino(); // getting a new tetromino
@@ -114,28 +121,23 @@ bool game(int level) {
 		while(speed_counter > 0) {
 			
 			if (input_counter > 10){
+				
 				// checking inputs
-				if (input(pause, delay, frame_counter, stop, current)) {
+				if (input(canSwap, pause, delay, frame_counter, stop, current, hold, next)) {
 					check = false;
 					refresh = true;
 				}
-				
-				
 				
 				// reset input_counter
 				input_counter = 0;
 				clear_keybuf();
 			}
-			
 			// if the game should refresh the screen
 			if (refresh) {
 				// reset refresh
 				refresh = false;
 				
-				outputGame(next, score, lines, level);
-				
-				system("cls");
-				printf("%d", delay);
+				outputGame(hold, next, score, lines, level);
 
 			}
 			

@@ -18,6 +18,7 @@ bool isComplete(int line); // checks what lines are complete
 void complete(int line); //moves all spaces down above the completed line
 bool checkCollision(struct Tetromino tetromino, int dirx, int diry); // checks for collision, returns true or false.
 int aInit(); // initialises allegro and keyboard etc
+void resetTetromino(struct Tetromino &tetromino); // resets tetromino to starting positions
 
 
 #endif

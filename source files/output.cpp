@@ -5,7 +5,7 @@
 #include "output.h"
 #include "globals.h"
 
-void outputGame(struct Tetromino next, int score, int lines, int level){
+void outputGame(struct Tetromino hold, struct Tetromino next, int score, int lines, int level){
 	
 	// reset bgrid
 	loadbmp(&bGrid, "bitmaps/game_grid.bmp");
@@ -48,32 +48,58 @@ void outputGame(struct Tetromino next, int score, int lines, int level){
 	switch (next.shape) {
 		// blit that colour block to the corresponding block in the grid
 		case 'l':
-			blit(lineTetromino, buffer, 0, 0, 240, 160, 64, 32);
+			blit(lineTetromino, buffer, 0, 0, 260, 155, 64, 32);
 			break;
 		case 'L':
-			blit(lTetromino, buffer, 0, 0, 240, 160, 64, 32);
+			blit(lTetromino, buffer, 0, 0, 260, 155, 64, 32);
 			break;
 		case 'J':
-			blit(jTetromino, buffer, 0, 0, 240, 160, 64, 32);
+			blit(jTetromino, buffer, 0, 0, 260, 155, 64, 32);
 			break;
 		case 'O':
-			blit(oTetromino, buffer, 0, 0, 240, 160, 64, 32);
+			blit(oTetromino, buffer, 0, 0, 260, 155, 64, 32);
 			break;
 		case 'T':
-			blit(tTetromino, buffer, 0, 0, 240, 160, 64, 32);
+			blit(tTetromino, buffer, 0, 0, 260, 155, 64, 32);
 			break;
 		case 'S':
-			blit(sTetromino, buffer, 0, 0, 240, 160, 64, 32);
+			blit(sTetromino, buffer, 0, 0, 260, 155, 64, 32);
 			break;
 		case 'Z':
-			blit(zTetromino, buffer, 0, 0, 240, 160, 64, 32);
+			blit(zTetromino, buffer, 0, 0, 260, 155, 64, 32);
 		break;
 	}
+	// print hold tetromino
+	switch (hold.shape) {
+		// blit that colour block to the corresponding block in the grid
+		case 'l':
+			blit(lineTetromino, buffer, 0, 0, 260, 206, 64, 32);
+			break;
+		case 'L':
+			blit(lTetromino, buffer, 0, 0, 260, 206, 64, 32);
+			break;
+		case 'J':
+			blit(jTetromino, buffer, 0, 0, 260, 206, 64, 32);
+			break;
+		case 'O':
+			blit(oTetromino, buffer, 0, 0, 260, 206, 64, 32);
+			break;
+		case 'T':
+			blit(tTetromino, buffer, 0, 0, 260, 206, 64, 32);
+			break;
+		case 'S':
+			blit(sTetromino, buffer, 0, 0, 260, 206, 64, 32);
+			break;
+		case 'Z':
+			blit(zTetromino, buffer, 0, 0, 260, 206, 64, 32);
+		break;
+	}
+	
 	// printing scores
-	textprintf_ex(buffer, font, 210, 240, makecol(0,0,0), -1, "%d", score);
-	textprintf_ex(buffer, font, 210, 310, makecol(0,0,0), -1, "%d", lines);
-	textprintf_ex(buffer, font, 210, 370, makecol(0,0,0), -1, "%d", level + 1);
-	textprintf_ex(buffer, font, 210, 440, makecol(0,0,0), -1, "%d", highScore(score));
+	textprintf_ex(buffer, font, 215, 280, makecol(0,0,0), -1, "%d", score);
+	textprintf_ex(buffer, font, 215, 335, makecol(0,0,0), -1, "%d", lines);
+	textprintf_ex(buffer, font, 215, 387, makecol(0,0,0), -1, "%d", level + 1);
+	textprintf_ex(buffer, font, 215, 443, makecol(0,0,0), -1, "%d", highScore(score));
 
 	// blit the grid to the buffer then the buffer to the screen
 	blit(bGrid, buffer, 0, 0, 35, 140, bGrid -> w, bGrid -> h);
@@ -121,6 +147,32 @@ void initialisebmps(){
 	
 }
 END_OF_FUNCTION(initialisebmps)
+
+void destroybmps(){
+	destroy_bitmap(bGrid);
+	destroy_bitmap(gameBackground);
+	destroy_bitmap(mainMenu);
+	destroy_bitmap(helpMenu);
+	destroy_bitmap(creditsMenu);
+	
+	destroy_bitmap(bRed);
+	destroy_bitmap(bYellow);
+	destroy_bitmap(bCyan);
+	destroy_bitmap(bBlue);
+	destroy_bitmap(bPurple);
+	destroy_bitmap(bGreen);
+	destroy_bitmap(bOrange);
+	
+	destroy_bitmap(oTetromino);
+	destroy_bitmap(sTetromino);
+	destroy_bitmap(lineTetromino);
+	destroy_bitmap(tTetromino);
+	destroy_bitmap(zTetromino);
+	destroy_bitmap(jTetromino);
+	destroy_bitmap(lTetromino);
+	
+}
+END_OF_FUNCTION(destroybmps)
 
 bool loadbmp(BITMAP **fptr, char const fileName[20]) {	
 	*fptr = load_bitmap(fileName, NULL);

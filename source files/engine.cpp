@@ -7,9 +7,6 @@
 #include "globals.h"
 #include "engine.h"
 
-extern volatile long speed_counter;
-extern int grid[GRID_X][GRID_Y];
-
 void increment_speed_counter() {
 	speed_counter++;
 }
@@ -261,6 +258,7 @@ int aInit() {
 	allegro_init(); // Initialize Allegro
 	install_keyboard(); // Initialize keyboard routines
 	install_mouse(); // Initialize mouse
+	install_sound(DIGI_AUTODETECT, MIDI_AUTODETECT, NULL); // initialise sound
 
 	//Tell allegro to install the timer routines
 	install_timer();
@@ -276,3 +274,130 @@ int aInit() {
 	return 0;
 }
 END_OF_FUNCTION(aInit)
+
+void resetTetromino(struct Tetromino &tetromino) {
+	int i;
+
+	switch(tetromino.colour) {
+
+			// if the tetromino is a l shaped tetromino (cyan)
+		case 1:
+			tetromino.shape = 'l';
+			for (i = 0; i < 4; i++) {
+				tetromino.px[i] = 1; // setting each block's x coordinate to 0
+				tetromino.py[i] = 3 + i; // setting each block's y coordinate
+			}
+			// setting centre of tetromino
+			tetromino.cx = 0.5;
+			tetromino.cy = 4.5;
+			break;
+
+			// O shaped tetromino (yellow)
+		case 2:
+			tetromino.shape = 'O';
+			// setting x positions
+			tetromino.px[0] = 0;
+			tetromino.px[1] = 0;
+			tetromino.px[2] = 1;
+			tetromino.px[3] = 1;
+			// setting y positions
+			tetromino.py[0] = 4;
+			tetromino.py[1] = 5;
+			tetromino.py[2] = 4;
+			tetromino.py[3] = 5;
+			// setting centre of tetromino
+			tetromino.cx = 0.5;
+			tetromino.cy = 4.5;
+			break;
+
+			// T shaped tetromino (purple)
+		case 3:
+			tetromino.shape = 'T';
+			// setting x positions
+			tetromino.px[0] = 0;
+			tetromino.px[1] = 1;
+			tetromino.px[2] = 1;
+			tetromino.px[3] = 1;
+			// setting y positions
+			tetromino.py[0] = 4;
+			tetromino.py[1] = 3;
+			tetromino.py[2] = 4;
+			tetromino.py[3] = 5;
+			// setting centre of tetromino
+			tetromino.cx = 1;
+			tetromino.cy = 4;
+			break;
+
+			// S shaped tetromino(green)
+		case 4:
+			tetromino.shape = 'S';
+			// setting x positions
+			tetromino.px[0] = 0;
+			tetromino.px[1] = 0;
+			tetromino.px[2] = 1;
+			tetromino.px[3] = 1;
+			// setting y positions
+			tetromino.py[0] = 4;
+			tetromino.py[1] = 5;
+			tetromino.py[2] = 3;
+			tetromino.py[3] = 4;
+			// setting centre of tetromino
+			tetromino.cx = 1;
+			tetromino.cy = 4;
+			break;
+
+			// Z shaped tetromino(red)
+		case 5:
+			tetromino.shape = 'Z';
+			// setting x positions
+			tetromino.px[0] = 0;
+			tetromino.px[1] = 0;
+			tetromino.px[2] = 1;
+			tetromino.px[3] = 1;
+			// setting y positions
+			tetromino.py[0] = 3;
+			tetromino.py[1] = 4;
+			tetromino.py[2] = 4;
+			tetromino.py[3] = 5;
+			// setting centre of tetromino
+			tetromino.cx = 1;
+			tetromino.cy = 4;
+			break;
+
+			// J shaped tetromino(blue)
+		case 6:
+			tetromino.shape = 'J';
+			// setting x positions
+			tetromino.px[0] = 0;
+			tetromino.px[1] = 1;
+			tetromino.px[2] = 1;
+			tetromino.px[3] = 1;
+			// setting y positions
+			tetromino.py[0] = 3;
+			tetromino.py[1] = 3;
+			tetromino.py[2] = 4;
+			tetromino.py[3] = 5;
+			// setting centre of tetromino
+			tetromino.cx = 1;
+			tetromino.cy = 4;
+			break;
+			// L shaped tetromino(orange)
+		case 7:
+			tetromino.shape = 'L';
+			// setting x positions
+			tetromino.px[0] = 0;
+			tetromino.px[1] = 1;
+			tetromino.px[2] = 1;
+			tetromino.px[3] = 1;
+			// setting y positions
+			tetromino.py[0] = 5;
+			tetromino.py[1] = 3;
+			tetromino.py[2] = 4;
+			tetromino.py[3] = 5;
+			// setting centre of tetromino
+			tetromino.cx = 1;
+			tetromino.cy = 4;
+			break;
+	}
+}
+END_OF_FUNCTION(resetTetromino)

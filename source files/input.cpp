@@ -7,24 +7,25 @@
 #include "globals.h"
 #include "engine.h"
 
-bool input(bool &pause,int delay, int &frame_counter, bool &stop, struct Tetromino &tetromino){
+bool input(bool &canSwap, bool &pause,int delay, int &frame_counter, bool &stop, struct Tetromino &tetromino, struct Tetromino &hold, struct Tetromino &next){
 	bool refresh = false;
-	bool lock = false;
+	struct Tetromino temp; 
 	
-	if (frame_counter > 10 && frame_counter % 1000 == 0){
-		lock = false;
+	// reset canSwap
+	if (stop){
+		canSwap = true;
 	}
 	
 	// checking inputs. used this so it only triggers once.
 	if (keypressed()) {
 		switch(readkey()) {
-			case 20992: // left arrow key 20992
+			case 20992: // left arrow key
 				refresh = move(tetromino, -1); // move left
 				break;
 			case 21248: // right arrow key
 				refresh = move(tetromino, 1); // move right
 				break;
-			case 21504: // up arrow ke
+			case 21504: // up arrow key
 				// you can only rotate 5 times in a row, if it's not time for the tile to move by gravity, and if the tile isnt "stopped"
 				if (rotateCounter < 5 && frame_counter < delay && !stop){
 					refresh = rotate(tetromino); // rotates
@@ -47,14 +48,39 @@ bool input(bool &pause,int delay, int &frame_counter, bool &stop, struct Tetromi
 					}
 				break;
 			case 4208: // p key
-				if (!pause && !lock){
+				if (!pause){
 					pause = true;
-					lock = true;
 				}
+				break;
+			case 6778: // z key
+				if (canSwap){
+					// clear tetroimino from matrix
+					clearSpace(tetromino);
+					
+					// swap hold and current if hold isn't empty
+					if (hold.colour != 0){
+						temp = hold;
+						hold = tetromino;
+						tetromino = temp;
+					}
+					else {
+						hold = tetromino;
+						getTetromino(next, tetromino);
+					}
+					
+					// reset tetromino positions
+					resetTetromino(tetromino);
+					
+					// draw tetromiono back to matrix
+					drawTetromino(tetromino);
+					canSwap = false;
+				}	
+				refresh = true;
 				break;
 		}
 	}
 	clear_keybuf();
+	
 	return refresh; // nothing happened
 }
 
