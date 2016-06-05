@@ -1,3 +1,5 @@
+// Charles Zhang  ICS3U  mrs Cullum	 June 13, 2016
+// header file for globals.ccp. contains structure definitions
 #ifndef GLOBALS_H_
 #define GLOBALS_H_
 

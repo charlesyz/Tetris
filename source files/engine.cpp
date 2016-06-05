@@ -1,4 +1,6 @@
-// all engine related functions: writing to matrix, speed counter, collisions
+// Charles Zhang  ICS3U  mrs Cullum	 June 13, 2016
+// all game engine related functions, such as timers, game grid manipulation, checking for collisions, and tetromino manipulation. prototyping in engine.h
+
 #include <stdio.h>
 #include <allegro.h>
 #include <stdlib.h>

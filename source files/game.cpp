@@ -1,4 +1,5 @@
-// main game function
+// Charles Zhang  ICS3U  mrs Cullum	 June 13, 2016
+// main menu and game
 #include <stdio.h>
 #include <allegro.h>
 #include <stdlib.h>
@@ -11,14 +12,13 @@
 bool menu(int &level){
 	bool lock = false;
 	int counter = 0;
-	
-	clear_keybuf();
+	int wait_counter = 0;
 	
 	// create blitmap, blit main menu to buffer
 	buffer = create_bitmap(400,600);
 	blit(mainMenu, buffer, 0, 0, 0, 0, 400, 600);
 	
-	while (!key[KEY_ESC]){
+	while (!key[KEY_Q]){
 		while(speed_counter > 0) {
 			
 			// reset lock every 200 ms	
@@ -27,7 +27,7 @@ bool menu(int &level){
 				counter = 0;
 			}
 			
-			// if mouse is clicked and lock is false
+			// checking for the player clicking on buttons
 			if (mouse_b & 1 && !lock){
 				// if play game button
 				if (mouse_x > 100 && mouse_x < 320 && mouse_y > 210 && mouse_y < 259){
@@ -60,11 +60,14 @@ bool menu(int &level){
 			}
 			speed_counter--;
 			counter++;
-					
+			
+			// print to screen
 			blit(mainMenu, buffer, 0, 0, 0, 0, 400, 600);
 			textprintf_ex(buffer, font, 260, 300, makecol(0,0,0), -1, "%d", level + 1);
 			blit(buffer, screen, 0, 0, 0, 0, 400, 600);
 		}
+	
+	clear_keybuf();
 	}
 	
 	return false;
@@ -80,6 +83,7 @@ bool game(int level) {
 	bool check = false; // should the game recheck
 	bool pause = false;
 	bool canSwap = true;
+	bool playsound = true;
 	int score = 0;
 	int lines = 0;
 	int delay = 80;
@@ -91,7 +95,6 @@ bool game(int level) {
 	int i, j;
 
 	srand(time(NULL)); //random number seed
-
 	// initialise blockPos
 	initialiseBlockPos();
 
@@ -108,7 +111,7 @@ bool game(int level) {
 	clearSpace(current);
 	drawTetromino(current);
 
-	while(!key[KEY_ESC]) { //If the user hits escape, quit the program{
+	while(!key[KEY_ESC]) { //If the user hits escape, quit the program
 
 		// reset check boolean
 		check = true;
@@ -132,7 +135,8 @@ bool game(int level) {
 				input_counter = 0;
 				clear_keybuf();
 			}
-			// if the game should refresh the screen
+			
+			// if the game should refresh the screen, reprint the screen
 			if (refresh) {
 				// reset refresh
 				refresh = false;
@@ -141,20 +145,31 @@ bool game(int level) {
 
 			}
 			
-			// if there is a collision, check if lines are complete
+			// if there is a collision, check if lines are complete and do all score / compelte line related functions
 			if (stop && check) {
 				j = 0; // set j to 0
 				linesComplete = 0; // reset lines complete
+				
+				// play sound only once
+				if (playsound){
+					// play  the fall sound
+					play_sample(sample_fall, 255, 128, 1000, false);
+					playsound = false;
+				}
 				
 				if (reset_counter > 25){
 					// check if line is complete
 					for (i = 0; i < 20; i++) {
 						if (isComplete(i)) {
+							// play the complete sound
+							play_sample(sample_complete, 255, 128, 1000, false);
+							
 							completed[j] = i;
 							j++;
 							linesComplete++; // increment number of lines complete
 						}
 					}
+					
 					// move down completed lines
 					for (i = 0; i < 4; i++) {
 						if (completed[i] != -1) {
@@ -162,10 +177,12 @@ bool game(int level) {
 							refresh = true;
 						}
 					}
+					
 					// increase score
 					if (linesComplete > 0) {
 						scoreUpdate(lines, score, level, linesComplete);
 					}
+					
 					 // get a new tetromino
 					getTetromino(next, current);
 					
@@ -177,10 +194,12 @@ bool game(int level) {
 						// tell the game to refresh the screen
 						refresh = true;
 					}
+					
 					// game is over
 					else {
 						lose = true;
 					}
+					playsound = true;
 					frame_counter = 0; // reset frame counter
 					reset_counter = 0;
 				}
@@ -197,9 +216,14 @@ bool game(int level) {
 		}
 		
 		// if the user wants to pause
-		if (pause){
+		while (pause){
+			// stop and resume background music with a pause between to prevent stuttering of the music
+			stop_sample(sample_backgroundmusic);
+			rest(170);
 			allegro_message("You are paused. Press OK to unpause");
+			rest(170);
 			pause = false;
+			play_sample(sample_backgroundmusic, 255, 128, 1000, true);
 		}
 
 		// double check collisions

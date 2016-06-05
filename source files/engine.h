@@ -1,3 +1,5 @@
+// Charles Zhang  ICS3U  mrs Cullum	 June 13, 2016
+// Header file for engine.cpp
 #ifndef ENGINE_H_
 #define ENGINE_H_
 #include "globals.h"
@@ -6,6 +8,7 @@
 extern volatile long speed_counter;
 extern int grid[GRID_X][GRID_Y];
 extern int rotateCounter;
+
 // function prototyping
 struct Tetromino randTetromino(); // get random tetromino
 void clearTetromino(struct Tetromino &structure); // clear tetromino

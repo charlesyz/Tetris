@@ -1,4 +1,5 @@
-// all files to do with output, score, graphics, and sound
+// Charles Zhang  ICS3U  mrs Cullum	 June 13, 2016
+// all functions to do with output, score, graphics, and sound
 #include <stdio.h>
 #include <allegro.h>
 #include <stdlib.h>
@@ -148,6 +149,28 @@ void initialisebmps(){
 }
 END_OF_FUNCTION(initialisebmps)
 
+void initialisesamples(){
+	
+	// load samples
+	loadsample(&sample_backgroundmusic, "sound/background.wav");
+	loadsample(&sample_complete, "sound/complete.wav");
+	loadsample(&sample_drop, "sound/drop.wav");
+	loadsample(&sample_fall, "sound/fall.wav");
+	loadsample(&sample_rotate, "sound/rotate.wav");
+}
+END_OF_FUNCTION(initialisesamples);
+
+void destroysamples(){
+
+	// destroy samples
+	destroy_sample(sample_backgroundmusic);
+	destroy_sample(sample_complete);
+	destroy_sample(sample_drop);
+	destroy_sample(sample_fall);
+	destroy_sample(sample_rotate);
+}
+END_OF_FUNCTION(destroysamples)
+
 void destroybmps(){
 	destroy_bitmap(bGrid);
 	destroy_bitmap(gameBackground);
@@ -183,9 +206,18 @@ bool loadbmp(BITMAP **fptr, char const fileName[20]) {
 	}
 	return true;
 }
-END_OF_FUNCTION(checkAndLoad)
+END_OF_FUNCTION(loadbmp)
 
-
+bool loadsample(SAMPLE **fptr, char const fileName[20]) {	
+	*fptr = load_sample(fileName);
+	if (!*fptr) {
+    	printf("Could not find %s\n", fileName);
+    	allegro_message("Could not open file.");
+    	return false;
+	}
+	return true;
+}
+END_OF_FUNCTION(loadbmp)
 
 void scoreUpdate(int &lines, int &score, int &level, int numComplete){
 	int i = 0;
@@ -197,16 +229,16 @@ void scoreUpdate(int &lines, int &score, int &level, int numComplete){
 	
 	switch(numComplete){
 		case 1:
-			score += 50*(level + 1);
+			score += 40*(level + 1);
 			break;
 		case 2:
-			score += 150*(level + 1);
+			score += 100*(level + 1);
 			break;
 		case 3:
-			score += 350*(level + 1);
+			score += 300*(level + 1);
 			break;
 		case 4:
-			score += 1000*(level + 1);
+			score += 1200*(level + 1);
 			break; 
 	}
 }

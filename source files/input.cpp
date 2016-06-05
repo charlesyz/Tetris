@@ -1,4 +1,5 @@
-// input and moving/tetromino manipulation
+// Charles Zhang  ICS3U  mrs Cullum	 June 13, 2016
+// input and moving tetrominos
 #include <stdio.h>
 #include <stdlib.h>
 #include <allegro.h>
@@ -6,6 +7,7 @@
 #include "input.h"
 #include "globals.h"
 #include "engine.h"
+#include "output.h"
 
 bool input(bool &canSwap, bool &pause,int delay, int &frame_counter, bool &stop, struct Tetromino &tetromino, struct Tetromino &hold, struct Tetromino &next){
 	bool refresh = false;
@@ -31,12 +33,15 @@ bool input(bool &canSwap, bool &pause,int delay, int &frame_counter, bool &stop,
 					refresh = rotate(tetromino); // rotates
 					// if the piece was rotated, increment rotate counter
 					if (refresh){
+						// play sound
+						play_sample(sample_rotate, 255, 128, 1000, false);
 						rotateCounter++; // rotate counter resets on gravity
 					}
 				}
 				break;
 			case 19232: // spacebar drops tetromino
 				drop(tetromino);
+				play_sample(sample_drop, 255, 128, 1000, false);
 				refresh = true;
 				break;
 			case 21760: // down arrow key

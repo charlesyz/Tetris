@@ -1,3 +1,5 @@
+// Charles Zhang  ICS3U  mrs Cullum	 June 13, 2016
+// header file for main.cpp
 #ifndef MAIN_H_
 #define MAIN_H_
 
