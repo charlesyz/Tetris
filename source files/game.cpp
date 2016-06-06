@@ -217,13 +217,11 @@ bool game(int level) {
 		
 		// if the user wants to pause
 		while (pause){
-			// stop and resume background music with a pause between to prevent stuttering of the music
-			stop_sample(sample_backgroundmusic);
-			rest(170);
-			allegro_message("You are paused. Press OK to unpause");
-			rest(170);
-			pause = false;
-			play_sample(sample_backgroundmusic, 255, 128, 1000, true);
+			blit(pause, buffer, 0, 0, 0, 0, 400, 600);
+			blit(buffer, screen, 0, 0, 0, 0, 400, 600);
+			if (key[KEY_BACKSPACE]){
+				pause = false;	
+			}
 		}
 
 		// double check collisions
