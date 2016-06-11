@@ -129,6 +129,8 @@ void initialisebmps(){
 	loadbmp(&mainMenu, "bitmaps/main_menu.bmp");
 	loadbmp(&helpMenu, "bitmaps/help_menu.bmp");
 	loadbmp(&creditsMenu, "bitmaps/credits_menu.bmp");
+	loadbmp(&pauseMenu, "bitmaps/pause_menu.bmp");
+	loadbmp(&lost, "bitmaps/gameover.bmp");
 	
 	loadbmp(&bRed, "bitmaps/red_block.bmp");
 	loadbmp(&bYellow, "bitmaps/yellow_block.bmp");
@@ -172,11 +174,14 @@ void destroysamples(){
 END_OF_FUNCTION(destroysamples)
 
 void destroybmps(){
+	
 	destroy_bitmap(bGrid);
 	destroy_bitmap(gameBackground);
 	destroy_bitmap(mainMenu);
 	destroy_bitmap(helpMenu);
 	destroy_bitmap(creditsMenu);
+	destroy_bitmap(pauseMenu);
+	destroy_bitmap(lost);
 	
 	destroy_bitmap(bRed);
 	destroy_bitmap(bYellow);

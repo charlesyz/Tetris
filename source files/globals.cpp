@@ -17,6 +17,8 @@ BITMAP *gameBackground = NULL;
 BITMAP *mainMenu = NULL;
 BITMAP *helpMenu = NULL;
 BITMAP *creditsMenu = NULL;
+BITMAP *pauseMenu = NULL;
+BITMAP *lost = NULL;
 
 BITMAP *bRed = NULL;
 BITMAP *bYellow = NULL;
@@ -37,7 +39,6 @@ BITMAP *zTetromino = NULL;
 BITMAP *blocks[GRID_X * GRID_Y]; 
 
 // sound samples;
-
 SAMPLE *sample_complete = NULL;
 SAMPLE *sample_backgroundmusic = NULL;
 SAMPLE *sample_drop = NULL;

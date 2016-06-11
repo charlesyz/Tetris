@@ -20,14 +20,14 @@ bool input(bool &canSwap, bool &pause,int delay, int &frame_counter, bool &stop,
 	
 	// checking inputs. used this so it only triggers once.
 	if (keypressed()) {
-		switch(readkey()) {
-			case 20992: // left arrow key
+		switch(readkey() >> 8) {	// convert to scancode
+			case KEY_LEFT: // left arrow key
 				refresh = move(tetromino, -1); // move left
 				break;
-			case 21248: // right arrow key
+			case KEY_RIGHT: // right arrow key
 				refresh = move(tetromino, 1); // move right
 				break;
-			case 21504: // up arrow key
+			case KEY_UP: // up arrow key
 				// you can only rotate 5 times in a row, if it's not time for the tile to move by gravity, and if the tile isnt "stopped"
 				if (rotateCounter < 5 && frame_counter < delay && !stop){
 					refresh = rotate(tetromino); // rotates
@@ -39,12 +39,12 @@ bool input(bool &canSwap, bool &pause,int delay, int &frame_counter, bool &stop,
 					}
 				}
 				break;
-			case 19232: // spacebar drops tetromino
+			case KEY_SPACE: // spacebar drops tetromino
 				drop(tetromino);
 				play_sample(sample_drop, 255, 128, 1000, false);
 				refresh = true;
 				break;
-			case 21760: // down arrow key
+			case KEY_DOWN: // down arrow key
 				if (!stop) { // drops tetromino down if it isn't stopped
 					stop = gravity(tetromino); // move tetromino down by 1 space
 					frame_counter = 0; // reset frame counter
@@ -52,12 +52,12 @@ bool input(bool &canSwap, bool &pause,int delay, int &frame_counter, bool &stop,
 					refresh = true;
 					}
 				break;
-			case 4208: // p key
+			case KEY_P: // p key
 				if (!pause){
 					pause = true;
 				}
 				break;
-			case 6778: // z key
+			case KEY_Z: // z key
 				if (canSwap){
 					// clear tetroimino from matrix
 					clearSpace(tetromino);

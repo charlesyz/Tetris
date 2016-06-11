@@ -43,14 +43,14 @@ bool menu(int &level){
 				}
 				// if help button
 				else if (mouse_x > 100 && mouse_x < 320 && mouse_y > 345 && mouse_y < 398){
-					while (!key[KEY_BACKSPACE]){
+					while (!key[KEY_BACKSPACE] || key[KEY_ESC]){
 						blit(helpMenu, buffer, 0, 0, 0, 0, 400, 600);
 						blit(buffer, screen, 0, 0, 0, 0, 400, 600);
 					}
 				}
 				// if credits button
 				else if (mouse_x > 100 && mouse_x < 320 && mouse_y > 415 && mouse_y < 466){
-					while (!key[KEY_BACKSPACE]){
+					while (!key[KEY_BACKSPACE] || key[KEY_ESC]){
 						blit(creditsMenu, buffer, 0, 0, 0, 0, 400, 600);
 						blit(buffer, screen, 0, 0, 0, 0, 400, 600);
 					}
@@ -150,14 +150,13 @@ bool game(int level) {
 				j = 0; // set j to 0
 				linesComplete = 0; // reset lines complete
 				
-				// play sound only once
-				if (playsound){
-					// play  the fall sound
-					play_sample(sample_fall, 255, 128, 1000, false);
-					playsound = false;
-				}
-				
 				if (reset_counter > 25){
+					// play sound only once
+						 if (playsound){
+						// play  the fall sound
+						play_sample(sample_fall, 255, 128, 1000, false);
+						playsound = false;
+					}
 					// check if line is complete
 					for (i = 0; i < 20; i++) {
 						if (isComplete(i)) {
@@ -217,9 +216,9 @@ bool game(int level) {
 		
 		// if the user wants to pause
 		while (pause){
-			blit(pause, buffer, 0, 0, 0, 0, 400, 600);
+			blit(pauseMenu, buffer, 0, 0, 0, 0, 400, 600);
 			blit(buffer, screen, 0, 0, 0, 0, 400, 600);
-			if (key[KEY_BACKSPACE]){
+			if (key[KEY_BACKSPACE] || key[KEY_ESC]){
 				pause = false;	
 			}
 		}
@@ -244,8 +243,15 @@ bool game(int level) {
 
 		// if game over
 		if (lose) {
-			allegro_message("GAME OVER! press okay to play again");
-			return true;
+			masked_blit(lost, buffer, 0, 0, 0, 0, 400, 600);
+			blit(buffer, screen, 0, 0, 0, 0, 400, 600);
+			readkey();
+			if (key[KEY_ENTER]){
+				return true;	
+			}
+			else{
+				return false;
+			}
 		}
 	}
 	return false;

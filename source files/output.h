@@ -13,6 +13,8 @@ extern BITMAP *gameBackground;
 extern BITMAP *mainMenu;
 extern BITMAP *helpMenu;
 extern BITMAP *creditsMenu;
+extern BITMAP *pauseMenu;
+extern BITMAP *lost;
 
 extern BITMAP *bRed;
 extern BITMAP *bYellow;
